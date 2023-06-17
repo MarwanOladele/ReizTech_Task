@@ -8,6 +8,13 @@ type Props = {};
 
 const DataContainer = (props: Props) => {
   const [countries, setCountries] = useState<Country[]>([]);
+  const [filteredCountries, setFilteredCountries] = useState<Country[]>([]);
+
+  const [showOnlySmallerThanLithuania, setShowOnlySmallerThanLithuania] =
+    useState(false);
+  const [showOnlyOceaniaCountries, setShowOnlyOceaniaCountries] =
+    useState(false);
+
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [sortOrder, setSortOrder] = useState<SortOrder>("desc");
@@ -16,7 +23,10 @@ const DataContainer = (props: Props) => {
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = countries.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems = filteredCountries.slice(
+    indexOfFirstItem,
+    indexOfLastItem
+  );
 
   useEffect(() => {
     const fetchData = async () => {
@@ -36,6 +46,10 @@ const DataContainer = (props: Props) => {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    filterCountries();
+  }, [countries, showOnlySmallerThanLithuania, showOnlyOceaniaCountries]);
+
   const handleSort = () => {
     const sortedCountries = countries.sort((a, b) => {
       if (sortOrder === "asc") {
@@ -48,16 +62,27 @@ const DataContainer = (props: Props) => {
     setSortOrder(sortOrder === "asc" ? "desc" : "asc");
   };
 
-  const filterByOceaniaRegion = () => {
-    const newCountry = countries.filter(
-      (country) => country.region === "Oceania"
-    );
-    setCountries(newCountry);
-  };
+  const filterCountries = () => {
+    let filteredItems = countries;
 
-  const filterSmallerThanLithuania = () => {
-    const newCountry = countries.filter((country) => country.area <= 65300);
-    setCountries(newCountry);
+    if (showOnlySmallerThanLithuania) {
+      const lithuania = countries.find(
+        (country) => country.name === "Lithuania"
+      );
+      if (lithuania) {
+        filteredItems = filteredItems.filter(
+          (country) => country.area < lithuania.area
+        );
+      }
+    }
+
+    if (showOnlyOceaniaCountries) {
+      filteredItems = filteredItems.filter(
+        (country) => country.region === "Oceania"
+      );
+    }
+
+    setFilteredCountries(filteredItems);
   };
 
   if (isLoading) return <Loader />;
@@ -69,16 +94,24 @@ const DataContainer = (props: Props) => {
           <div className=" flex gap-2">
             <span className="text-[15px]">Filter by:</span>
             <span
-              onClick={filterByOceaniaRegion}
+              onClick={() =>
+                setShowOnlyOceaniaCountries(!showOnlyOceaniaCountries)
+              }
               className="cursor-pointer border-2 border-gray-500 px-2 rounded-md hover:bg-gray-100 hover:text-black"
             >
-              Oceania region
+              {showOnlyOceaniaCountries
+                ? "Show All"
+                : "Show Only Oceania Countries"}
             </span>
             <span
-              onClick={filterSmallerThanLithuania}
+              onClick={() =>
+                setShowOnlySmallerThanLithuania(!showOnlySmallerThanLithuania)
+              }
               className="cursor-pointer border-2 border-gray-500 px-2 rounded-md hover:bg-gray-100 hover:text-black"
             >
-              Area smaller than Lithuania
+              {showOnlySmallerThanLithuania
+                ? "Show All"
+                : "Show Only Smaller Than Lithuania"}
             </span>
           </div>
           <div className="">
