@@ -3,3 +3,5 @@ export type Country = {
   region: string;
   area: number;
 };
+
+export type SortOrder = 'asc' | 'desc';
