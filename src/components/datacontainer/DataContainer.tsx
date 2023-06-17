@@ -2,7 +2,10 @@ import { useEffect, useState } from "react";
 import { Country, SortOrder } from "../../type";
 import Loader from "../loader/Loader";
 import axios from "axios";
-import { BsFillArrowLeftSquareFill, BsFillArrowRightSquareFill } from "react-icons/bs";
+import {
+  BsFillArrowLeftSquareFill,
+  BsFillArrowRightSquareFill,
+} from "react-icons/bs";
 import { motion } from "framer-motion";
 
 const DataContainer = () => {
@@ -18,7 +21,7 @@ const DataContainer = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [sortOrder, setSortOrder] = useState<SortOrder>("desc");
 
-  const itemsPerPage = 9;
+  const itemsPerPage = 15;
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -94,16 +97,16 @@ const DataContainer = () => {
   if (isLoading) return <Loader />;
 
   return (
-    <section>
-      <div className="h-[85vh]">
+    <section className="min-h-[90vh]">
+      <div className="min-h-[85vh]">
         <div className="w-5/6 mx-auto">
-          <div className="min-h-[4vh] text-gray-100 flex justify-between items-center text-[12px]">
-            <div className=" flex gap-2">
+          <div className="min-h-[4vh] text-gray-100 flex justify-between items-center text-[12px] sm:flex-row flex-col gap-2 sm:p-0 p-2">
+            <div className=" flex gap-2 sm:flex-row flex-col sm:py-1 py-0 ">
               <span
                 onClick={() =>
                   setShowOnlyOceaniaCountries(!showOnlyOceaniaCountries)
                 }
-                className="cursor-pointer border-2 border-gray-500 px-2 rounded-md hover:bg-gray-100 hover:text-black"
+                className="cursor-pointer border-2 border-gray-500 px-2 rounded-md hover:bg-gray-100 hover:text-black text-center"
               >
                 {showOnlyOceaniaCountries
                   ? "Show All"
@@ -113,7 +116,7 @@ const DataContainer = () => {
                 onClick={() =>
                   setShowOnlySmallerThanLithuania(!showOnlySmallerThanLithuania)
                 }
-                className="cursor-pointer border-2 border-gray-500 px-2 rounded-md hover:bg-gray-100 hover:text-black"
+                className="cursor-pointer border-2 border-gray-500 px-2 rounded-md hover:bg-gray-100 hover:text-black text-center"
               >
                 {showOnlySmallerThanLithuania
                   ? "Show All"
@@ -123,7 +126,7 @@ const DataContainer = () => {
             <div className="">
               <span
                 onClick={handleSort}
-                className="cursor-pointer border-2 border-gray-500 px-2 rounded-md hover:bg-gray-100 hover:text-black"
+                className="cursor-pointer border-2 border-gray-500 px-2 rounded-md hover:bg-gray-100 hover:text-black text-center"
               >
                 Sort by Name -{" "}
                 {sortOrder === "asc" ? "Ascending" : "Descending"}
@@ -166,14 +169,14 @@ const DataContainer = () => {
           </div>
         </div>
       </div>
-      <div className="h-[5vh]">
+      <div className="min-h-[5vh] mt-2">
         <div className="w-full h-full flex justify-center">
-          <div className="text-white flex gap-3 h-full w-2/6 mx-auto items-center  justify-center">
+          <div className="text-white flex gap-3 h-full w-2/6 mx-auto items-center  justify-center ">
             <button
               onClick={() => handlePagination("prev")}
               disabled={currentPage === 1}
             >
-             <BsFillArrowLeftSquareFill size={24}/>
+              <BsFillArrowLeftSquareFill size={24} />
             </button>
             <span className="">{currentPage}</span>
             <button
@@ -183,7 +186,7 @@ const DataContainer = () => {
                 Math.ceil(filteredCountries.length / itemsPerPage)
               }
             >
-              <BsFillArrowRightSquareFill size={24}/>
+              <BsFillArrowRightSquareFill size={24} />
             </button>
           </div>
         </div>
