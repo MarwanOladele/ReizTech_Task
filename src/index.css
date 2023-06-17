@@ -15,5 +15,5 @@ body,
     padding: 0;
     box-sizing: border-box;
     font-family: 'DM Sans', sans-serif;
-    @apply text-white-100
+    @apply text-black-200
 }
