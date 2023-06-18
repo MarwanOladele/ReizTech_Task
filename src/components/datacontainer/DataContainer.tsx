@@ -1,12 +1,9 @@
 import { useEffect, useState } from "react";
 import { Country, SortOrder } from "../../type";
-import Loader from "../loader/Loader";
 import axios from "axios";
-import {
-  BsFillArrowLeftSquareFill,
-  BsFillArrowRightSquareFill,
-} from "react-icons/bs";
+import Loader from "../loader/Loader";
 import Data from "./Data";
+import Pagination from "../pagination/Pagination";
 
 const DataContainer = () => {
   const [countries, setCountries] = useState<Country[]>([]);
@@ -17,18 +14,27 @@ const DataContainer = () => {
   const [showOnlyOceaniaCountries, setShowOnlyOceaniaCountries] =
     useState(false);
 
-  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [currentPage, setCurrentPage] = useState(1);
+
   const [sortOrder, setSortOrder] = useState<SortOrder>("desc");
 
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  // number of items per page
   const itemsPerPage = 15;
 
+  // Calculate the index of the first and last items of the current page
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+
+  // Get the items for the current page
   const currentItems = filteredCountries.slice(
     indexOfFirstItem,
     indexOfLastItem
   );
+
+  // calculate total number of pages
+  const totalPages = Math.ceil(filteredCountries.length / itemsPerPage);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -50,8 +56,9 @@ const DataContainer = () => {
     filterCountries();
   }, [countries, showOnlySmallerThanLithuania, showOnlyOceaniaCountries]);
 
+  // sort by ascending and descending
   const handleSort = () => {
-    const sortedCountries = countries.sort((a, b) => {
+    const sortedCountries = filteredCountries.sort((a, b) => {
       if (sortOrder === "asc") {
         return a.name.localeCompare(b.name);
       } else {
@@ -65,6 +72,7 @@ const DataContainer = () => {
   const filterCountries = () => {
     let filteredItems = countries;
 
+    // Filter by smaller than Lithuania
     if (showOnlySmallerThanLithuania) {
       const lithuania = countries.find(
         (country) => country.name === "Lithuania"
@@ -76,6 +84,7 @@ const DataContainer = () => {
       }
     }
 
+    // Filter by Oceania region
     if (showOnlyOceaniaCountries) {
       filteredItems = filteredItems.filter(
         (country) => country.region === "Oceania"
@@ -83,17 +92,24 @@ const DataContainer = () => {
     }
 
     setFilteredCountries(filteredItems);
+    setCurrentPage(1); // Reset to first page
   };
 
-  const handlePagination = (direction: "prev" | "next") => {
-    if (direction === "prev") {
-      setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
-    } else {
-      const maxPage = Math.ceil(filteredCountries.length / itemsPerPage);
-      setCurrentPage((prevPage) => Math.min(prevPage + 1, maxPage));
+  // Pagination next page
+  const nextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
     }
   };
 
+  // Pagination prev page
+  const prevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  // Loader
   if (isLoading) return <Loader />;
 
   return (
@@ -140,28 +156,12 @@ const DataContainer = () => {
           </div>
         </div>
       </div>
-      <div className="min-h-[5vh] mt-2">
-        <div className="w-full h-full flex justify-center">
-          <div className="text-white flex gap-3 h-full w-2/6 mx-auto items-center  justify-center ">
-            <button
-              onClick={() => handlePagination("prev")}
-              disabled={currentPage === 1}
-            >
-              <BsFillArrowLeftSquareFill size={24} />
-            </button>
-            <span className="">{currentPage}</span>
-            <button
-              onClick={() => handlePagination("next")}
-              disabled={
-                currentPage ===
-                Math.ceil(filteredCountries.length / itemsPerPage)
-              }
-            >
-              <BsFillArrowRightSquareFill size={24} />
-            </button>
-          </div>
-        </div>
-      </div>
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onNextPage={nextPage}
+        onPrevPage={prevPage}
+      />
     </section>
   );
 };
