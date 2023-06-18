@@ -6,7 +6,7 @@ import {
   BsFillArrowLeftSquareFill,
   BsFillArrowRightSquareFill,
 } from "react-icons/bs";
-import { motion } from "framer-motion";
+import Data from "./Data";
 
 const DataContainer = () => {
   const [countries, setCountries] = useState<Country[]>([]);
@@ -134,38 +134,9 @@ const DataContainer = () => {
             </div>
           </div>
           <div className="min-h-[81vh] border-b-2 border-gray-500">
-            {currentItems.map((item: Country, i) => {
-              const { name, region, area } = item;
-              return (
-                <motion.div
-                  className="min-h-[9vh] text-gray-100 border-t-2 border-gray-500"
-                  key={i}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true, amount: 0.5 }}
-                  transition={{ duration: 0.5 }}
-                  variants={{
-                    hidden: { opacity: 0, x: -50 },
-                    visible: { opacity: 1, x: 0 },
-                  }}
-                >
-                  <div className="text-[16px] font-bold">
-                    <span className="text-primary ">Country Name:</span>{" "}
-                    <span>{name}</span>
-                  </div>
-                  <div className="text-[15px]">
-                    <span className="text-primary font-normal">
-                      Country Region:
-                    </span>{" "}
-                    <span>{region}</span>
-                  </div>
-                  <div className="text-[13px] font-extralight">
-                    <span className="text-primary ">Country Area:</span>{" "}
-                    <span>{area}</span>
-                  </div>
-                </motion.div>
-              );
-            })}
+            {currentItems.map((item: Country, i) => (
+              <Data key={i} {...item} />
+            ))}
           </div>
         </div>
       </div>
