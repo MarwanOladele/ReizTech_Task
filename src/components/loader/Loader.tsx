@@ -2,7 +2,7 @@ import Loading from "../../assets/loader.gif";
 
 const Loader = () => {
   return (
-    <section className="h-[85vh]">
+    <section className="h-[80vh]">
       <div className="w-5/6 mx-auto h-full">
         <div className="flex justify-center items-center flex-col pt-20">
           <img src={Loading} alt="Loading" className="w-[100px] h-[100px]" />

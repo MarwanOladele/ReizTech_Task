@@ -22,7 +22,7 @@ const DataContainer = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   // number of items per page
-  const itemsPerPage = 15;
+  const itemsPerPage = 9;
 
   // Calculate the index of the first and last items of the current page
   const indexOfLastItem = currentPage * itemsPerPage;
@@ -111,7 +111,6 @@ const DataContainer = () => {
   };
 
   // Loader
-  if (isLoading) return <Loader />;
 
   return (
     <section className="min-h-[90vh]">
@@ -126,9 +125,11 @@ const DataContainer = () => {
             sortOrder={sortOrder}
           />
           <div className="min-h-[81vh] border-b-2 border-gray-500">
-            {currentItems.map((item: Country, i) => (
-              <Data key={i} {...item} />
-            ))}
+            {isLoading ? (
+              <Loader />
+            ) : (
+              currentItems.map((item: Country, i) => <Data key={i} {...item} />)
+            )}
           </div>
         </div>
       </div>

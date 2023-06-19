@@ -1,6 +1,6 @@
 import { SortOrder } from "../../type";
 
-type Props = {
+type FilterAndSortProps = {
   showOnlyOceaniaCountries: boolean;
   showOnlySmallerThanLithuania: boolean;
   setShowOnlyOceaniaCountries: (value: boolean) => void;
@@ -8,6 +8,7 @@ type Props = {
   handleSort: () => void;
   sortOrder: SortOrder;
 };
+
 const FilterAndSort = ({
   showOnlyOceaniaCountries,
   showOnlySmallerThanLithuania,
@@ -15,7 +16,7 @@ const FilterAndSort = ({
   setShowOnlySmallerThanLithuania,
   handleSort,
   sortOrder,
-}: Props) => {
+}: FilterAndSortProps) => {
   return (
     <div className="min-h-[4vh] text-gray-100 flex justify-between items-center text-[12px] sm:flex-row flex-col gap-2 sm:p-0 p-2">
       <div className=" flex gap-2 sm:flex-row flex-col sm:py-1 py-0 ">

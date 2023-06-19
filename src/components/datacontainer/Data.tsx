@@ -9,7 +9,7 @@ type Props = {
 const Data = ({ name, region, area }: Props) => {
   return (
     <motion.div
-      className="min-h-[9vh] text-gray-100 border-t-2 border-gray-500"
+      className="min-h-[8.95vh] text-gray-100 border-t-2 border-gray-500"
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.5 }}
