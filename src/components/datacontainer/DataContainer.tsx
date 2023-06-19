@@ -4,7 +4,7 @@ import axios from "axios";
 import Loader from "../loader/Loader";
 import Data from "./Data";
 import Pagination from "../pagination/Pagination";
-import FilterAndSort from "./filterAndSort";
+import FilterAndSort from "./FilterAndSort";
 
 const DataContainer = () => {
   const [countries, setCountries] = useState<Country[]>([]);
